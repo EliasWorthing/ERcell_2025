@@ -14,11 +14,11 @@
 
 % --- Title, Author Info, Abstract Text ---
 % {{{
-\title{How to Write a Research Paper}
-\author{Douglas R. Tree}
+\title{On the Development of a Molten Salt Electrorefining Simulation}
+\author{Dakota S. Banks}
 \affiliation{Chemical Engineering Department, Brigham Young University, Provo, Utah}
 \date{\today}
-\email{tree.doug@byu.edu}
+\email{dakotasb@byu.edu}
 
 \newcommand*{\abstracttext}{
 % Put abstract text here
@@ -52,23 +52,29 @@ Writing the abstract is typically the last step before you submit a paper.}
 
 \section{Introduction}
 % {{{
+Molten salt electrorefining is an area of siginficant interest in the production and purification of many of the worlds important metals including aluminum, uranium, titanium and many others. 
+Electrorefining in general is fairly well understood in aqueous systems however there is much more uncertainty in molten salt systems due to the difficulty of accurate measurments and testing. 
+One means to overcome this obstacle is to develop simulations of the process and systems involved.
 
-Write out the first two or three paragraphs of an introduction.
-Your introduction should be a ``funnel'' from the wider world into the research you are doing.
-It should provide motivation and context for your paper.
-It should also provide a ``scope'', i.e.\ what you are doing and what you are not trying to do, and it should provide a brief outline to orient the reader.
+These simulations come in several different flavors and varieties.
+The simplest form are pure thermodynamic models which focus on understanding the equilibrium behaivour of the metal in the elctrolyte. 
+Other simulations utilize full 3D geometric information to capture the full breadth of mass transfer information.
+Still other models strike a middle ground by simulating mass transfer in one dimension only. 
 
-Specifically, your introduction should include the following pieces:
-\begin{enumerate}
-  \item Describe a ``problem'' and describe the state of the world that exists because of this problem
-  \item Describe what others have done to solve this problem.
-Focus on the ``prior state-of-the-art'', i.e.\ the best solution(s) that others have come up with, instead of a history lesson with all of the previous solutions.
-You should have a few key references in this part~\cite{Tree2018}.
-  \item Describe what your approach to solving the problem is. 
-Focus on what is new or unique about your approach.
-What are you doing that others haven't done before?
-  \item Give a brief outline of how the paper is organized to orient the reader.
-\end{enumerate}
+The ultimate gaol of these models is to obtain information that can be used to improve and understand the experiemntal and applied processes currently in use in many different industries. 
+To obtain such information a model needs several different features and abilities. It needs to be fast enough to return information of a shorter time scale than the operation of an electrorefining cell.
+It needs to catpure the most inportant aspects of physics and chemistry that could affect the electrorefining process.
+Finally it needs to be experimentally validated so we know that the model adheres to reality.
+
+A 1D model fits the criteria nicely. It is fast, while still capturing enough information about mass transfer and geometry to compare to experiments. 
+Current 1D electrorefining models trace their origin to the TRAIL model with the most recent model coming from Cumberland in 2014. 
+This model, dubbed ERAD, is focused on the potential development of passivation layers in Uranium electrorefining but is lacking key areas.
+Most notably the model uses simple guesses as to the thickness of the diffusion layers which according to the authors of TRAIL is the "most important parameter of the model". 
+ERAD was developed as a general ER model and thus has limited ability to be expermentally validated. 
+Our efforts seek to develop an ER model that has closer ties to a specific system, allowing for direct experimental validation without a total sacrifice of generality.
+
+The simulation developed in the paper calculates the mass transfer in the difusion layer, the diffusion layer thicknesses based on transport boundary layer theory and the anode activity as a funciton of the analyte mass fraction in the anode. 
+Additionally the mass transport model incorporates transient migration and diffusion of every species in the system (molten salt components and analyte).
 
 % }}}
 
@@ -85,15 +91,9 @@ I will help you with this when the time comes.
 \section{Results and Discussion}
 % {{{
 
-Organize your results and discussion by subsections and figures.
-Subsections are major organizing themes or topics for your figures.
-Choose subsections that logically organize your results and tell a logical story.
-Organize your figures within the subsections that does the same thing.
-
-At the outline stage, do not write full paragraphs in the results and discussion.
-However, you should put bulleted lists of what message you plan to convey along with each figure.
-Every major point you want to discuss should have a figure, and every figure should be discussed.
-If you are struggling to explain something, you probably need a figure, and you should never have figures that are disconnected from the text.
+\subsection{Absolute boundary layer thickness}
+\subsection{Relative boundary layer thickness}
+\subsection{Boundary layer correlations relation to measurable properties}
 
 \subsection{How to add figures}
 
