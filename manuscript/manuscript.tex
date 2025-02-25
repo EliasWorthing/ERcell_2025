@@ -8,6 +8,8 @@
 \usepackage{graphicx} % for figures
 \usepackage{amsmath, amssymb} % for math
 \usepackage{bm} % for bold math fonts
+\usepackage{float} % Allows you to force figures to a certain location
+\usepackage{stfloats} % Allows you to force figures to a certain location
 \usepackage{xr} % crossreferencing main manuscript to and from supporting info
 \externaldocument[SI:]{suppinfo}
 % }}}
@@ -80,41 +82,90 @@ Additionally the mass transport model incorporates transient migration and diffu
 
 \section{Methods}
 % {{{
-\emph{Don't write a methods section at the outline stage.}
-Usually a methods section is pretty easy to write when you get to the ``full paper'' stage.
-You typically write down the details of what you did (as succinctly as possible) so that someone else can replicate your work.
-The hard part is balancing details with brevity.
-I will help you with this when the time comes.
+\subsection{Kinetics}
+The kinetics of the surface reactions at each electrode and handled using a variation of the Bulter-Volmer equation for metal dissolution which is given by:
+\begin{equation}
+  i = i_0\left [\frac{X_s}{X_b}\exp\left (\frac{-\alpha nF\eta}{RT}\right ) 
+- \frac{X_{m,s}}{X_{m,b}}\exp\left (\frac{(1-\alpha)nF\eta}{RT}\right )\right ]
+\end{equation}
+where $i_0 = nFk(X_b)^{(1-\alpha)}(X_{m,b})^\alpha$, $X$ represents a mass fraction with the subscript s for surface and b for bulk.
+The m subscript is for the mass fraction in the metal on the electrode. $\eta$ represents the surface overpotential, $\alpha$ is the charge transfer coefficient which we have fixed at 0.5 for the time being.  
+\subsection{Mass transfer}
+In an ER cell there are three mass transfer vehicles; diffusion, migration, and convection. 
+This model is concerned with ER cells that are continuously stirred. 
+This causes two regions to form, a well-mixed inner region that comprises the majority of the cell and a pair of narrow regions near the surface of each electrode where convection is negligable.
+The dffusion layers can be modeled with the following set of equations:
+
+\begin{align}
+    & \frac{dC_i}{dt} = z_iu_iF\nabla (C_i\nabla \phi) + D_i \nabla^2C_i, \label{eq:migration_diffusion}\\ 
+    & \sum_i z_i C_i = 0 \label{eq:electroneutrality}
+\end{align}
+where the subscript $i$ refers to components ${1...n}$, $z$ is the charge number of each component and $\phi$ is the local electropotential (which is different than the applied potential).
+These equations are all coupled through $\phi$ which is implicitly governed by Equation \ref{eq:electroneutrality}, the electroneutrality condition.
+These equations are written with the assumption that the mobility, $u$, and the diffusion coefficients are constant with respect to space and is only strictly correct in diffuse systems. 
+In a future paper this system will be revisited assuming a concentrated system but for this version of the model these equations suffice.
+
+\subsection{Diffusion layer thickness}
+To solve the mass transfer equations in the previous section, one must know the thickness of the diffusion layers.
+This value is one of the most important parameters in the model since it directly controls the rate of diffusion. 
+Other authors have estimated this value based on a range of assumptions and guesses but to validate the model experimentally it is important to tie this value to physically measurable parameters.
+
+In the broader transport discipline much work has been done on the boundary layers that form in flowing fluids. 
+Correlations have been developed for many different geormetries and flow parameters.
+For this model two correlations have been used based on a commonly used geometry for critical material processing. 
+
+The first correlation desribes the boundary layer formed on the surface of a disk with a fluid in rigid body rotation above it\cite{Smith_1972}.
+\begin{equation}
+    \delta = \left [\ln\left(\frac{b}{r}\right )\right]^\frac{1}{3}\frac{b}{\left(-\frac{F0}{9}\right)^\frac{1}{3}Re^\frac{1}{2}Sc^\frac{1}{3}}
+    \label{eq:disk}
+\end{equation}
+In this correlation $Re = vb/\nu$ and $Sc = \nu/D$. $\nu$ is the kinematic viscosity, $v$ is the velocity, $b$ is the radius of the disc, $r$ is the position on that radius, $F0$ is a model parameter, $D$ is the diffusion coefficient, and $\delta$ is the diffusion layer thickness.
+This equation is then averaged over the size of the disk to get a value for the diffusion layer thickness at the surface of the disk. 
+This correlation represents the anode.
+
+The second correlation is for rigid body rotation of a fluid inside of a hollow cylinder\cite{Rott1966}.
+\begin{equation}
+    \delta = \left ( \frac{\nu z}{vR^2}\right )^\frac{2}{5} R
+    \label{eq:cylinder}
+\end{equation}
+In this equation $R$ is the cylinder radius, and $z$ is the vertical position in the cylinder. 
+Again, this equation is averaged over the length of the cylinder to find a single value for the 1D mass transfer model. 
+This correlation represents the cathode. 
+
+Despite their simplicity, these correlations serve as a good approximation of the diffusion layers formed in this geometry. 
+Additionally, these correlations can be replaced with others for a different geommetry, making this method capable of simulating a range of different cell designs. 
+
+\subsection{Anode activity model} \label{sec:activity}
+Since the anonde is molten metal alloy with a changing composistion over time it makes sense that the activity of the analyte in the anode will also change over time.
+The model we are using to represent this change in activity is the Miedema model\cite{Miedema1980}.
+\begin{multline}
+        \ln\gamma_i = \frac{1}{RT}a_{ij}\Delta H_{ij}\left[1 + (1-x)\left[\frac{\left(1 - 2x\right)}{x\left(1-x\right)} -
+\frac{\left[u_{i} \left({\phi}_{i} - {\phi}_{j}\right)\right]}{\left(1 + \left(1 - x\right)u_{i} \left({\phi}_{i} - {\phi}_{j}\right)\right)} + \right. \right.\\
+\left. \left. \frac{\left[u_{j} \left({\phi}_{j} - {\phi}_{i}\right)\right]}{\left(1 + xu_{j} \left({\phi}_{j} - {\phi}_{i}\right)\right)} - 
+\frac{V_{i} \left[1 + \left(1 - 2x\right)u_{i} \left({\phi}_{i} - {\phi}_{j}\right)  \right]+ V_{j}\left[-1 + \left(1 - 2x\right)u_{j} \left({\phi}_{j} - {\phi}_{i}\right)\right]} 
+ {V_{j} \left(1 - x\right) \left(1 + xu_{j} \left({\phi}_{j} - {\phi}_{i}\right)\right) + V_{i}x \left(1 + \left(1 - x\right)u_{i} \left({\phi}_{i} - {\phi}_{j}\right) \right)}\right]\right]
+\end{multline}
+where 
+\begin{equation}
+    \Delta H_{ij} = f_{ij}\frac{x\left(1-x\right)\left(1 + xu_{j} \left({\phi}_{j} - {\phi}_{i}\right)\right)\left(1 + \left(1 - x\right)u_{i} \left({\phi}_{i} - {\phi}_{j}\right)\right)}{V_{j} \left(1 - x\right) \left(1 + xu_{j} \left({\phi}_{j} - {\phi}_{i}\right)\right) + V_{i}x \left(1 + \left(1 - x\right)u_{i} \left({\phi}_{i} - {\phi}_{j}\right) \right)}
+\end{equation}
+and
+\begin{equation}
+f_{ij} = \frac{2pV_iV_j\left \{q/p\left[n^{1/3}_i - n^{1/3}_j\right]^2-\left(\phi_i-\phi_j\right)^2-b(r/p)\right\}}{n^{-1/3}_i + n^{-1/3}_j}.
+\end{equation}
+Additionally, $x$ is the mass fraction of one component, $V_i$ and $V_j$ are molar volumes, $u_i$, $u_j$, $n_i$, $n_j$, $\phi_i$, $\phi_j$, $q$, $p$, and $b$ are model parameters, and $a_{ij}$ is a parameter related to the entropy.
+One major limitation of this model is that it is unable to handle phase changes so if the anode solidifies at any point this model will not capture that. 
+\section{Numerical methods}
 
 % }}}
 
 \section{Results and Discussion}
 % {{{
-
+\subsection{CV results comparison}
 \subsection{Absolute boundary layer thickness}
 \subsection{Relative boundary layer thickness}
 \subsection{Boundary layer correlations relation to measurable properties}
 
-\subsection{How to add figures}
-
-I have included an example figure, i.e.\ Fig~\ref{fig-placeholder} to show you how to do this in LaTeX, and how to do it in your outline.
-You can reference a figure by its name in LaTeX; this makes it easy when you add or remove a figure.
-
-\begin{figure}[tbp]
-  \includegraphics[width=3.25in]{fig-placeholder}
-  \caption{This is a placeholder for the figure you should add. The caption should describe the figure and the necessary details.
-It should not contain discussion of what the figure means.}
-  \label{fig-placeholder}
-\end{figure}
-
-Your outline should include a list of points to make about your figure, e.g.\
-\begin{itemize}
-  \item How to add figures in LaTeX
-  \item How to reference figures
-  \item Adding bullet point lists in outlines
-  \item Appropriate captions.
-  \item Figure sizes
-\end{itemize}
 
 Note that most figures need to fit within a single column of a double column document.
 The correct size in most journals is $3.25$ inches wide.
@@ -128,34 +179,6 @@ There are some example scripts in the \texttt{figure} directory that are hopeful
   \caption{This is a doublewide figure (spans both columns).}
   \label{fig-doublewide}
 \end{figure*}
-
-\subsection{How to add equations and tables}
-
-You can add tables and equations to your paper as well as figures.
-In the outline stage, you will probably have relatively few of these, but it is useful to see how to do this anyway.
-
-Equations should be numbered, and should be inserted as part of a full sentence.
-For example, the Pythagorean theorem
-\begin{equation}
-a^{2} = b^{2} + c^{2}
-\end{equation}
-could be an equation that you could include if you were going to write a paper on Fermat's last theorem.
-
-Tables are inserted similarly to figures, as is shown by the example Table~\ref{tab-example}.
-For more details, refer to the many online tutorials and examples of LaTeX tables.
-
-\begin{table}
-\caption{This is an example table}
-\label{tab-example}
-\begin{tabular}{cc}
-\hline
-Header 1 & Header 2 \\
-\hline
-R1, C1 & R1, C2 \\
-R2, C1 & R2, C2 \\
-\hline
-\end{tabular}
-\end{table}
 
 % }}}
 
