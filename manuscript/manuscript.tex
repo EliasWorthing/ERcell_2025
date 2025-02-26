@@ -1,7 +1,7 @@
 
 % ----- preamble -----
 % {{{
-\documentclass[journal=mamobx, layout=twocolumn]{achemso}
+\documentclass[journal=mamobx]{achemso}
 
 \usepackage{lipsum} % for generating dummy text
 \usepackage[dvipsnames]{xcolor} % for colors
@@ -42,14 +42,10 @@ Writing the abstract is typically the last step before you submit a paper.}
 
 % Format the abstract (make one column, much better looking...)
 % {{{
-\twocolumn[
-\begin{@twocolumnfalse}
-  \oldmaketitle
-  \begin{abstract}
-    \abstracttext
-  \end{abstract}
-\end{@twocolumnfalse}
-]
+\oldmaketitle
+\begin{abstract}
+  \abstracttext
+\end{abstract}
 % }}}
 
 \section{Introduction}
@@ -155,24 +151,91 @@ f_{ij} = \frac{2pV_iV_j\left \{q/p\left[n^{1/3}_i - n^{1/3}_j\right]^2-\left(\ph
 \end{equation}
 Additionally, $x$ is the mass fraction of one component, $V_i$ and $V_j$ are molar volumes, $u_i$, $u_j$, $n_i$, $n_j$, $\phi_i$, $\phi_j$, $q$, $p$, and $b$ are model parameters, and $a_{ij}$ is a parameter related to the entropy.
 One major limitation of this model is that it is unable to handle phase changes so if the anode solidifies at any point this model will not capture that. 
-\section{Numerical methods}
+\subsection{Numerical methods}
 
 % }}}
 
 \section{Results and Discussion}
 % {{{
-\subsection{CV results comparison}
-\subsection{Absolute boundary layer thickness}
-\subsection{Relative boundary layer thickness}
-\subsection{Boundary layer correlations relation to measurable properties}
+\subsection{Diffusion layer model}
+\begin{itemize}
+  \item The diffusion layer is the portion of the model with the most happening
+  \item Various factors impact how this region behaves and what impacts it.
+  \item Key diffusion layer parameters/behaviours are thickness, migration, concentration 
+\end{itemize}
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Boundary layer thickness is dictated by the correlations used. Side by side figure with each of the correlations. One side shows anode. Other side shows cathode }
+  \label{fig-doublewide}
+\end{figure*}
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Sensitivity from correlations to actual parameters such as velocity and viscosity}
+  \label{fig-doublewide}
+\end{figure*}
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Impact of migration of time to steady state?}
+  \label{fig-doublewide}
+\end{figure*}
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Results of CV compared to real world?}
+  \label{fig-doublewide}
+\end{figure*}
+\subsection{Electrorefining model}
+\begin{itemize}
+  \item ELectrorefining model includes pseudosteady treatment of anode
+  \item Also needs pseudosteady for bulk
+  \item Doesn't need anything for cathode because of system design for critical metals
+\end{itemize}
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Figure that shows process? Somehow show time scales, maybe series of cells}
+  \label{fig-doublewide}
+\end{figure*}
+\begin{itemize}
+  \item Several distinct time scales
+  \item Diffusion layer transient
+  \item Steady diffusion layer, pseudosteady bulk
+  \item steady diffusion layer and bulk, pseudosteady anode
+  \item Steady anode, steady diffusion, pseudosteady bulk
+  \item steady anode, steady bulk, transient diffusion layer
+\end{itemize}
+Figure for each of these scales?
+
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Absolute boundary layer thickness impact}
+  \label{fig-doublewide}
+\end{figure*}
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Relative boundary layer impact}
+  \label{fig-doublewide}
+\end{figure*}
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Sensitivity on overall simulation from design parameters assuming the current boundary layer correlations}
+  \label{fig-doublewide}
+\end{figure*}
+
+Any one of these figures might balloon out to two or three if not more
+It kind of depends on how easy it is to present the concept with a figure.
+\subsection{Other potential ideas to talk about}
+\begin{itemize}
+  \item Look at various geometries and find the one most optimal based on some parameters
+  \begin{itemize}
+    \item Can do this for both diffusion layer and overall cell operation 
+  \end{itemize}
+\end{itemize}
+\begin{figure*}[tbp]
+  \includegraphics[width=6.5in]{fig-doublewide}
+  \caption{Sensitivity on overall simulation from design parameters assuming the current boundary layer correlations}
+  \label{fig-doublewide}
+\end{figure*}
 
 
-Note that most figures need to fit within a single column of a double column document.
-The correct size in most journals is $3.25$ inches wide.
-I like to make mine with an aspect ratio of $4\times3$, which gives a height of $2.44$ in, but you can choose an aspect ratio that you like.
-If you need more space, you can make a double-wide figure of $6.5$ inches that spans two columns like Fig.~\ref{fig-doublewide}.
-Keep the final figure size in mind while making your figures; it will save you a lot of time and effort in the end.
-There are some example scripts in the \texttt{figure} directory that are hopefully useful to you.
 
 \begin{figure*}[tbp]
   \includegraphics[width=6.5in]{fig-doublewide}
