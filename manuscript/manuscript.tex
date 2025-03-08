@@ -71,8 +71,8 @@ Most notably the model uses simple guesses as to the thickness of the diffusion 
 ERAD was developed as a general ER model and thus has limited ability to be expermentally validated. 
 Our efforts seek to develop an ER model that has closer ties to a specific system, allowing for direct experimental validation without a total sacrifice of generality.
 
-The simulation developed in the paper calculates the mass transfer in the difusion layer, the diffusion layer thicknesses based on transport boundary layer theory and the anode activity as a funciton of the analyte mass fraction in the anode. 
-Additionally the mass transport model incorporates transient migration and diffusion of every species in the system (molten salt components and analyte).
+This simulation was developed in an effort to create a better bridge between experimental results and simulation models. 
+Specifically, we have developed a connection between eperimental paramters and the diffusion layer thickness which is a key parameter in the rate of diffusion.
 
 % }}}
 
@@ -163,33 +163,41 @@ One major limitation of this model is that it is unable to handle phase changes 
   \item Various factors impact how this region behaves and what impacts it.
   \item Key diffusion layer parameters/behaviours are thickness, migration, concentration 
 \end{itemize}
-\begin{figure*}[tbp]
+\begin{figure*}[htbp!]
   \includegraphics[width=6.5in]{fig-doublewide}
   \caption{Boundary layer thickness is dictated by the correlations used. Side by side figure with each of the correlations. One side shows anode. Other side shows cathode }
   \label{fig-doublewide}
 \end{figure*}
-\begin{figure*}[tbp]
+Depending on the correlation, different parameters will have greater or lesser effects on the boundary layer thickness. 
+When developing an ER cell it is important to know these dependencies because they will dictate what parameters are most important to the running of the cell and the optimization thereof.
+
+\begin{figure*}[htbp!]
   \includegraphics[width=6.5in]{fig-doublewide}
   \caption{Sensitivity from correlations to actual parameters such as velocity and viscosity}
   \label{fig-doublewide}
 \end{figure*}
-\begin{figure*}[tbp]
+\begin{figure*}[htbp!]
   \includegraphics[width=6.5in]{fig-doublewide}
-  \caption{Impact of migration of time to steady state?}
+  \caption{Impact of migration on time to steady state?}
   \label{fig-doublewide}
 \end{figure*}
-\begin{figure*}[tbp]
+\begin{figure*}[htbp!]
   \includegraphics[width=6.5in]{fig-doublewide}
   \caption{Results of CV compared to real world?}
   \label{fig-doublewide}
 \end{figure*}
+It could also be useful to make figures of CV matching with and without migration 
+
 \subsection{Electrorefining model}
 \begin{itemize}
   \item ELectrorefining model includes pseudosteady treatment of anode
   \item Also needs pseudosteady for bulk
   \item Doesn't need anything for cathode because of system design for critical metals
+  \begin{itemize}
+    \item critical metals don't want to concentrate metal anywhere. For no critical metals this is not important and the simulation could be addapted to compensate.
+  \end{itemize}
 \end{itemize}
-\begin{figure*}[tbp]
+\begin{figure*}[htbp!]
   \includegraphics[width=6.5in]{fig-doublewide}
   \caption{Figure that shows process? Somehow show time scales, maybe series of cells}
   \label{fig-doublewide}
@@ -204,17 +212,18 @@ One major limitation of this model is that it is unable to handle phase changes 
 \end{itemize}
 Figure for each of these scales?
 
-\begin{figure*}[tbp]
+\begin{figure*}[htbp!]
   \includegraphics[width=6.5in]{fig-doublewide}
   \caption{Absolute boundary layer thickness impact}
   \label{fig-doublewide}
 \end{figure*}
-\begin{figure*}[tbp]
+\begin{figure*}[htbp!]
   \includegraphics[width=6.5in]{fig-doublewide}
   \caption{Relative boundary layer impact}
   \label{fig-doublewide}
 \end{figure*}
-\begin{figure*}[tbp]
+I am imagining these compared to either the time to completion for the cell or even on the current output of the cell at a fixed potential.
+\begin{figure*}[htbp!]
   \includegraphics[width=6.5in]{fig-doublewide}
   \caption{Sensitivity on overall simulation from design parameters assuming the current boundary layer correlations}
   \label{fig-doublewide}
@@ -228,29 +237,32 @@ It kind of depends on how easy it is to present the concept with a figure.
   \begin{itemize}
     \item Can do this for both diffusion layer and overall cell operation 
   \end{itemize}
+  \item Could also potentially sweep temperature
+  \item I may add to this list as I do more research
 \end{itemize}
-\begin{figure*}[tbp]
-  \includegraphics[width=6.5in]{fig-doublewide}
-  \caption{Sensitivity on overall simulation from design parameters assuming the current boundary layer correlations}
-  \label{fig-doublewide}
-\end{figure*}
-
-
-
-\begin{figure*}[tbp]
-  \includegraphics[width=6.5in]{fig-doublewide}
-  \caption{This is a doublewide figure (spans both columns).}
-  \label{fig-doublewide}
-\end{figure*}
 
 % }}}
 
 \section{Conclusion}
 % {{{
-Write a bulleted list here of the main conclusions of the paper.
-These should include what the main, new contribution was to the problem outlined in the introduction.
-The conclusion should be organized like an inverted funnel: start with the details of what you did and zoom out to state what the new state of the art is after you have completed your work.
-The conclusion often terminates by stating what good ideas you have for future work.
+Limitations of this method
+\begin{itemize}
+  \item Assuming dilute pretty strictly. Hard to relax this assumption
+  \item multiple reactions arent implemented yet
+  \item No experimental results yet
+\end{itemize}
+Conclusions for real this time
+\begin{itemize}
+  \item We have developed a simulation method that is capable of connecting experimental parameters to simulation parameters using correlation derived from real physics
+  \item The simulation presents the importance of the diffusion layer thickness
+  \item We present our ability to match CV results
+  \item We show the various stages of an ER cell run based on the different time scales that things operate on
+  \item We show how the boundary layer affects the ER cell run itself alongside its general impact and effect from physical parameters
+\end{itemize}
+Future work:
+Implement activity model for electrolyte
+Match directly to experimental results.
+Loosen the dilute assumption before getting rid of it entirely.
 % }}}
 
 \begin{acknowledgement}
